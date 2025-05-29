@@ -1,0 +1,5 @@
+---
+- name: Install Packages && create Directory
+  file:
+    path: ./workspace
+    state: directory

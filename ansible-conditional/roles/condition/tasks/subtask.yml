@@ -1,0 +1,9 @@
+---
+- name: Install Python packages
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - pipenv
+    - virtualenv
+    - virtualenvwrapper

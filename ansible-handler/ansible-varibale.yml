@@ -1,0 +1,89 @@
+---
+- name: Ansible variable example
+  hosts: all  
+  gather_facts: no
+  remote_user: saiyajin
+  become: yes
+
+  # Env variables can be set in the playbook Global scope
+  # These variables can be used in the playbook and tasks
+  environment:
+    EXAMPLE: "dummy"
+
+  vars_files:
+    - vars.yml
+    # You can also include variables from a file using vars_files
+
+
+# String type variable example and bool
+  vars:
+    First_Name: "Saiyajin"
+    Last_Name: "Goku"
+    is_enabled: false     #depending on this variable, the full name will be displayed or not
+# List type variable example
+    my_list:
+      - item1
+      - item2
+      - item3
+# Dictionary type variable example
+    my_dict:
+      key1: value1
+      key2: value2
+      key3: value3
+  tasks:
+    - name: Display First Name
+      ansible.builtin.debug:
+        msg: "First Name is {{ First_Name }}"
+    - name : Display Last Name
+      ansible.builtin.debug:
+        msg: "Last Name is {{ Last_Name }}"
+    - name: Display Full Name
+      ansible.builtin.debug:
+        msg: "Full Name is {{ First_Name }} {{ Last_Name }}"
+      when: is_enabled
+    - name: Display List Items
+      debug:
+        var: my_list
+
+    - name: Display List Items with based on index
+      debug:
+        msg: "Item at index 0 is {{ my_list[0] }}"
+
+    - name: Display Dictionary Items
+      debug:
+        var: my_dict
+    - name: Display Dictionary Key1
+      debug:
+        msg: "Key1 value is {{ my_dict.key1 }}"
+
+    # Assign value to a variable
+    - name: Assign Full Name to a variable
+      command: echo "{{my_dict.key1}}"
+      register: new_dict
+
+    - name: Display New Dictionary Key1
+      debug:
+        msg: "New Dictionary Key1 value is {{ new_dict.stdout }}"
+    # Displaying the variable value
+    - name: Display Varibale from other 
+      debug:
+        var: nginx_vars
+# from runtime
+    - name: Runtime
+      debug:
+        var: version
+
+# Example of using variables in Ansible playbook
+    - name: Env Display
+      ansible.builtin.command: echo $EXAMPLE  
+    - name: Env Local Display
+      environment:
+        EXAMPLE_1: "local"
+      ansible.builtin.command: echo $EXAMPLE_1 
+
+  # ansible-playbook -i inventory.ini ansible-varibale.yml --extra-vars '{"version":"1.0"}' cmd on run time 
+  # ansible-playbook -i inventory.ini ansible-varibale.yml --extra-vars "@vars.yml" cmd runtime file which contains variables
+    # Alt way
+    # - name: Display Full Name with concatenation
+    #   debug:
+    #     msg: "Full Name is {{ First_Name + ' ' + Last_Name }}"

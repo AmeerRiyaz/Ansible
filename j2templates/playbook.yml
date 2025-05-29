@@ -1,0 +1,9 @@
+---
+- name: J2 Playbook
+  hosts: all
+  remote_user: saiyajin
+  become: yes
+  roles:
+    - j2
+  vars_files:
+    - vars.yml

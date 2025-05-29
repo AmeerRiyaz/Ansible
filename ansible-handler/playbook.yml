@@ -1,0 +1,26 @@
+---
+- name: Handler Playbook
+  hosts: all
+  remote_user: saiyajin
+  become: yes
+  roles:
+    - web
+
+  vars:
+    nginx_package: "nginx"
+    
+  handlers:
+    - name : Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Docker
+      ansible.builtin.command: systemctl status docker.service
+     
+
+
+
+
+
+# Handlers are used to respond to changes made by tasks. and must be defined in the playbook or in a role. in order to be triggered. and utilize when u have some dependices on the tasks that are executed.
