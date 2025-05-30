@@ -1,0 +1,97 @@
+---
+    - name: Update APT Package Cache
+      become_user: root
+      become: yes
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian" and ansible_distribution_version is version('20.04', '>=')
+
+    - name: Install APT Packages
+      become: yes
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - curl
+        - wget
+        - unzip
+        - vim
+        - python3
+        - python3-pip
+        - python3-venv
+        - python3-dev
+        - python3-setuptools
+        - python3-wheel
+        - python3-apt
+        - build-essential
+        - libssl-dev
+        - libffi-dev
+        - libxml2-dev
+        - libxslt1-dev
+        - zlib1g-dev
+        - libjpeg8-dev
+        - libpq-dev
+        - docker.io
+        - docker-compose
+        - git
+        - nodejs
+        - npm
+        - postgresql
+        - postgresql-client
+        - sqlite3
+        - net-tools
+        - htop
+        - jq
+        - cmake
+        - pkg-config
+        - g++
+        - software-properties-common
+        - httpie
+        - netcat
+        - telnet
+        - ansible
+        - make
+        - tmux
+        - sysstat
+        - iotop
+        - iftop
+      when: ansible_os_family == "Debian" and ansible_distribution_version is version('20.04', '>=') and Installer
+      register: install_pre_req
+
+    - name: Install NVM (Node Version Manager)
+      shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+      args:
+        executable: /bin/bash
+      when: Installer
+
+    - name: Verify All Installations
+      ansible.builtin.command: "{{ item }}"
+      loop:
+        - "curl --version"
+        - "wget --version"
+        - "unzip -v"
+        - "vim --version"
+        - "python3 --version"
+        - "pip3 --version"
+        - "docker --version"
+        - "docker-compose --version"
+        - "git --version"
+        - "node --version"
+        - "npm --version"
+        - "psql --version"
+        - "sqlite3 --version"
+        - "http --version"
+        - "ansible --version"
+        - "cmake --version"
+        - "make --version"
+        - "tmux -V"
+      when: install_pre_req is changed
+      register: verify_installations
+
+
+    - name: Display Verification Results 
+      debug:
+        msg: "Verification of installations completed successfully."
+      when: verify_installations is changed
