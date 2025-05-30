@@ -1,0 +1,39 @@
+"ansible-vault create  group_vars/my_vault.yml"
+enter password 
+open editor 
+Set Some value or txt or ur secerets
+then new files created on the provided dir with the vault.yml with encrypted data 
+"ansible-vault view  group_vars/my_vault.yml"
+"ansible-vault rekey  group_vars/my_vault.yml"
+
+
+=========================
+get the data frm vault in playbooks
+"ansible-playbook -i inventory.ini playbook.yml -e @group_vars/my_vault.yml --ask-vault-pass"
+
+-e ==> is the path of the vault.yml file our encrypted data 
+--ask-vault-pass asks the password of the vault for access 
+
+
+
+==========================
+
+"openssl rand -base64 2048 > pass_file/ansible_vault.pass"
+
+generate a random base64 password for our vault and playbook 
+
+"ansible-vault create  group_vars/base64_vault.yml --vault-password-file=pass_file/ansible_vault.pass"
+
+create using our base64 pass 
+
+"ansible-vault view  group_vars/base64_vault.yml --vault-password-file=pass_file/ansible_vault.pass"
+
+"ansible-playbook -i inventory.ini playbook.yml -e @group_vars/base64_vault.yml --vault-password-file=pass_file/ansible_vault.pass"
+
+Another way is to create a env varible and run with passing the filepath 
+keyword for that env on terminal is "export ANSIBLE_VAULT_PASSWORD=/path"
+
+
+
+
+

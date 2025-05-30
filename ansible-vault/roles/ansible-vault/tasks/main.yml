@@ -1,0 +1,12 @@
+---
+
+# This playbook demonstrates how to use Ansible Vault to encrypt sensitive data.
+# It includes a task to debug the variable containing the secret.
+# - name: Debug Ansible Vault
+#   debug:
+#     var: my_seceret
+
+# This Taks is same as above but here we are using the encrypted pass directly without entering for vault password
+- name: Debug Ansible Vault
+  debug:
+    var: Test_Data

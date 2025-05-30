@@ -5,5 +5,4 @@
   remote_user : saiyajin
   roles:
    - installer
-  vars_files:
-   - vars.yml
+ 
