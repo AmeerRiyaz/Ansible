@@ -1,0 +1,14 @@
+{
+  "name": "{{ name | default('contractgenerator') }}",
+  "version": "{{ version | default('1.0.0') }}",
+  "description": "{{ description | default('') }}",
+  "main": "{{ main | default('generate.js') }}",
+  "author": "{{ author | default('ameers') }}",
+  "license": "{{ license | default('ISC') }}",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "fs": "0.0.1-security",
+    "inquirer": "^8.2.6",
+    "ora": "^8.1.1"
+  }
+}

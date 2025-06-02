@@ -1,0 +1,15 @@
+---
+# Path to the deployment role's copy task file
+- name: Copy application files to the target directory
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+  loop:
+    - {src : "/{{pwd}}/project/ChainCraft", dest: "/opt/", owner: "{{ hosts }}"}
+  register: copy_results
+
+
+- name: Display Copy Results
+  ansible.builtin.debug:
+    msg: "Output Result {{copy_results}}"
