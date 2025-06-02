@@ -1,0 +1,19 @@
+---
+- name: Ping target
+  ansible.builtin.ping:
+  register: ping_result
+
+- name: Show ping result
+  debug:
+    var: ping_result
+
+- name: Install Packages && create Directory
+  file:
+    path: ./workspace
+    state: directory
+
+- name: Apt Update
+  become: yes
+  ansible.builtin.apt:
+    update_cache: yes
+    force_apt_get: yes

@@ -1,0 +1,10 @@
+---
+- name: Conditional-Based Playbook
+  hosts: all
+  remote_user: saiyajin
+  become: yes
+  roles:
+    - condition
+
+  vars_files:
+    - vars.yml

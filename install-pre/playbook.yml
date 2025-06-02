@@ -1,0 +1,8 @@
+---
+- name: Installer Package Playb0ok
+  become_user : root
+  hosts: all
+  remote_user : saiyajin
+  roles:
+   - installer
+ 

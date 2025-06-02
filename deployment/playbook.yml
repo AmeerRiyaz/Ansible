@@ -1,0 +1,21 @@
+---
+- name: ChainCraft Deployment Playbook
+  hosts: all
+  become: yes
+  remote_user: cr-7
+  roles:
+    - deploy
+  vars_files:
+    - vars/vars.yml
+  
+
+  # handler
+
+  handlers:
+  - name: Verify-Deployment
+    ansible.builtin.command: docker ps --filter "name=Test-Chaincode" 
+    register: running_containers
+
+  - name: Check 
+    ansible.builtin.debug:
+      msg: running_containers

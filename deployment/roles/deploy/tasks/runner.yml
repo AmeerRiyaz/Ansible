@@ -1,0 +1,25 @@
+---
+- name: Image Pull
+  ansible.builtin.command:
+    cmd: docker pull ameerriyaz/chaincraft:1.0
+  register: image_exists
+  changed_when: "'Downloaded newer image' in image_exists.stdout"
+
+
+- name: Run ChainCraft Docker container in background
+  ansible.builtin.command: >
+    docker run -d 
+    --name {{ chaincodename }}
+    -v /opt/Chaincraft/chaincodes:/usr/src/app/chaincodes
+    ameerriyaz/chaincraft:1.0
+    --dir /usr/src/app/chaincodes
+  when: image_exists.rc == 0
+
+- name: Check if ChainCraft container is running
+  ansible.builtin.command: docker ps --filter "name={{ chaincodename }}" 
+  register: running_containers
+  changed_when: false
+
+
+
+

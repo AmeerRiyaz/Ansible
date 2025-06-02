@@ -1,0 +1,10 @@
+name: mycontractgen
+version: 2.0.0
+description: A dynamic contract generation CLI tool
+main: app.js
+test_script: echo "Running unit tests..." && exit 0
+author: Ameer Riyaz
+license: MIT
+hosts: cr-7
+Installer: true
+pwd: "/home/saiyajin/ansible-work/"

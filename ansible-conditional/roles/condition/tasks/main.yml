@@ -1,0 +1,35 @@
+---
+# import subtasks 
+- import_tasks: subtask.yml
+- name: Testing The Conditional Based Plabook
+  debug:
+    msg: "This is a conditional based playbook"
+
+- name: Test The when/IF conditon 
+  debug:
+    msg: "This is a test for when condition {{ DATA }}"
+  when: DATA
+
+- name : Loop 
+  debug:
+    msg: "This is a loop {{ item }}"
+  loop: ["item1", "item2", "item3"]
+
+- name : Loop with Condition
+  debug:
+    msg: "This is a loop with condition {{ item }}"
+  loop: ["0", "1", "2"]
+  when: item == "1"
+- name : If conditon and syntax
+  debug:
+    msg: "check two conditions met or not"
+  when: 
+    - DATA
+    - DATA_2
+
+# other example of using when condition
+- name : If conditon and syntax
+  debug:
+    msg: "check two conditions met or not"
+  when: 
+    - DATA and DATA_2

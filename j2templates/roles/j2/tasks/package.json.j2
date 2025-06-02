@@ -1,0 +1,16 @@
+{
+  "name": "{{ app_name | default('my-node-app') }}",
+  "version": "{{ app_version | default('1.0.0') }}",
+  "description": "{{ app_description | default('A Node.js application managed by Ansible') }}",
+  "main": "{{ app_entry | default('app.js') }}",
+  "scripts": {
+    "start": "node {{ app_entry | default('app.js') }}"
+  },
+  "author": "{{ app_author | default('cr-7') }}",
+  "license": "{{ app_license | default('MIT') }}",
+  "dependencies": {
+    {% for dep, version in app_dependencies.items() %}
+    "{{ dep }}": "{{ version }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+  }
+}

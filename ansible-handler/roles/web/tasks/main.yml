@@ -1,0 +1,47 @@
+--- 
+- name: Testing Handler
+  ansible.builtin.debug:
+    msg: "This is a test for the handler functionality."
+
+    
+- name: Install Nginx and Update Cache
+  become: yes
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  notify: 
+    - Restart Nginx
+
+# - name: Test the Handler 
+#   notify:
+#     - Restart Nginx
+
+- name: Ensure Nginx is running after handler
+  service:  
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Get Nginx service status
+  ansible.builtin.command: systemctl is-active nginx
+  register: nginx_status
+  changed_when: false
+  notify:
+    - Docker
+  register: docker_status
+
+
+- name: Verify the Non existent Docker Service 
+  ansible.builtin.debug:
+    msg: "Docker service is not installed or not running."
+
+
+- name: Final Debug Message
+  ansible.builtin.debug:
+        msg: "Playbook finished. Check above for handler execution {{docker_status}}."

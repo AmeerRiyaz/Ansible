@@ -1,0 +1,56 @@
+---
+- name: Setting up J2 Playbook
+  ansible.builtin.debug:
+    msg: "This is a J2 Playbook"
+- name: Create a directory for the Node.js application
+  ansible.builtin.command:
+    cmd: mkdir -p /opt/my-node-app
+  register: create_dir
+- name: Copying the Server Code
+  ansible.builtin.copy:
+    src: /home/saiyajin/ansible-work/j2templates/app.js
+    dest: /opt/my-node-app/app.js
+    mode: "0644"
+- name: Verify the file is copied
+  ansible.builtin.command:
+    cmd: ls -l /opt/my-node-app/app.js
+  register: file_check
+- name: Display the file check result
+  ansible.builtin.debug:
+    msg: "File check result: {{ file_check.stdout }}"
+- name: Copy package.json file to the application directory
+  template:
+    src: package.json.j2
+    dest: /opt/my-node-app/package.json
+    mode: "0644"
+- name: Display the package.json file
+  ansible.builtin.command:
+    cmd: cat /opt/my-node-app/package.json
+  register: package_check
+- name: Install Node.js dependencies
+  ansible.builtin.command:
+    cmd: /home/cr-7/.nvm/versions/node/v22.15.0/bin/npm install --prefix /opt/my-node-app
+  environment:
+    PATH: "/home/cr-7/.nvm/versions/node/v22.15.0/bin:{{ ansible_env.PATH }}"
+  register: npm_install
+
+# create a config.json file using Jinja2 template
+# This file will be used to configure the Node.js application
+# j2 uses the vars defined in vars.yml to generate the config.json file
+- name: Generate app config from template
+  template:
+    src: config.json.j2
+    dest: /opt/my-node-app/config.json
+    mode: "0644"
+- name: Display the generated config file
+  ansible.builtin.command:
+    cmd: cat /opt/my-node-app/config.json
+  register: config_check
+- name: Start the Node.js application
+  ansible.builtin.command:
+    cmd: /home/cr-7/.nvm/versions/node/v22.15.0/bin/node app.js
+  args:
+    chdir: /opt/my-node-app
+  environment:
+    PATH: "/home/cr-7/.nvm/versions/node/v22.15.0/bin:{{ ansible_env.PATH }}"
+  register: app_start

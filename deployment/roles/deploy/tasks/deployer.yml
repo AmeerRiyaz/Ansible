@@ -1,0 +1,30 @@
+---
+- name: Install PostInstall
+  ansible.builtin.debug:
+    msg: "This is a PostInstall Playbook"
+
+- name: Copy the package.json by creating it from a template
+  ansible.builtin.template:
+    src: ../templates/package.json.j2
+    dest: /opt/ChainCraft/package.json
+    mode: "0644"
+  register: copy_package_json
+
+- name: Display the copied package.json file
+  ansible.builtin.command:
+    cmd: cat /opt/ChainCraft/package.json
+  register: package_check
+
+# - name: Install Node.js dependencies
+#   ansible.builtin.command:
+#     cmd: /home/cr-7/.nvm/versions/node/v22.15.0/bin/npm install --prefix /opt/ChainCraft
+#   register: npm_install
+
+- name: Make the application executable
+  ansible.builtin.command:
+    cmd: chmod +x /opt/ChainCraft/chaincraft
+  args:
+    chdir: /opt/ChainCraft
+
+
+ 
